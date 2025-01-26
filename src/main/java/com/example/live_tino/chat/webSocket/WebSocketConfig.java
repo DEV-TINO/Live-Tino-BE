@@ -1,0 +1,65 @@
+package com.example.live_tino.chat.webSocket;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.messaging.simp.stomp.StompReactorNettyCodec;
+import org.springframework.messaging.tcp.reactor.ReactorNettyTcpClient;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
+import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+import reactor.netty.tcp.TcpClient;
+
+@Configuration
+@EnableWebSocketMessageBroker
+@RequiredArgsConstructor
+public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+
+    @Value("${chat.path}")
+    private String path;
+
+    @Value("${spring.rabbitmq.host}")
+    private String rabbitmqHost;
+
+    @Value("${spring.rabbitmq.port}")
+    private int rabbitmqPort;
+
+    @Value("${spring.rabbitmq.username}")
+    private String rabbitmqUsername;
+
+    @Value("${spring.rabbitmq.password}")
+    private String rabbitmqPassword;
+
+    @Override
+    public void registerStompEndpoints(StompEndpointRegistry registry){
+        registry.addEndpoint("/stomp/chat")
+                .setAllowedOrigins("*")
+                .withSockJS();
+    }
+
+    @Override
+    public void configureMessageBroker(MessageBrokerRegistry registry){
+        TcpClient tcpClient = TcpClient
+                .create()
+                .host(rabbitmqHost)
+                .port(61613);
+
+        ReactorNettyTcpClient<byte[]> client = new ReactorNettyTcpClient<>(tcpClient, new StompReactorNettyCodec());
+
+        registry.setPathMatcher(new AntPathMatcher("."))
+                .setApplicationDestinationPrefixes("/pub");
+
+        registry.enableStompBrokerRelay("/queue", "topic", "/exchange", "/amq/queue")
+                .setAutoStartup(true)
+                .setTcpClient(client)
+                .setRelayHost("localhost")
+                .setRelayPort(61613)
+                .setClientLogin("test")
+                .setClientPasscode("1234");
+//                .setClientLogin(rabbitmqUsername)
+//                .setClientPasscode(rabbitmqPassword);
+    }
+
+}
