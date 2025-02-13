@@ -27,4 +27,3 @@ RUN sed -i 's/\r$//' ./gradlew
 RUN ./gradlew build -x test
 
 # 애플리케이션 실행 준비
-ENTRYPOINT ["java","-jar","/app.jar"]
