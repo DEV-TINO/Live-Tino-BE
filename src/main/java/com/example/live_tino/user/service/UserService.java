@@ -24,12 +24,13 @@ public class UserService {
     UpdatePasswordUserBean updatePasswordUserBean;
     UpdateUserBean updateUserBean;
     GetLoginIdBean getLoginIdBean;
+    CheckUserLoginIdBean checkUserLoginIdBean;
 
     @Value("${JWT_SECRET_KEY}")
     private String secretKey;
 
     @Autowired
-    public UserService(SaveUserBean saveUserBean, CheckUserBean checkUserBean, AddCookieBean addCookieBean, GetCookieBean getCookieBean, UpdatePasswordUserBean updatePasswordUserBean, UpdateUserBean updateUserBean, GetLoginIdBean getLoginIdBean){
+    public UserService(SaveUserBean saveUserBean, CheckUserBean checkUserBean, AddCookieBean addCookieBean, GetCookieBean getCookieBean, UpdatePasswordUserBean updatePasswordUserBean, UpdateUserBean updateUserBean, GetLoginIdBean getLoginIdBean, CheckUserLoginIdBean checkUserLoginIdBean){
         this.saveUserBean = saveUserBean;
         this.checkUserBean = checkUserBean;
         this.addCookieBean = addCookieBean;
@@ -37,6 +38,7 @@ public class UserService {
         this.updatePasswordUserBean = updatePasswordUserBean;
         this.updateUserBean = updateUserBean;
         this.getLoginIdBean = getLoginIdBean;
+        this.checkUserLoginIdBean = checkUserLoginIdBean;
     }
 
     // 로그인
@@ -73,6 +75,11 @@ public class UserService {
     // 아이디 찾기
     public ResponseUserLoginGetDTO getLoginId(RequestUserLoginGetDTO requestUserLoginGetDTO){
         return getLoginIdBean.exec(requestUserLoginGetDTO);
+    }
+
+    // 아이디 중복 확인
+    public Boolean duplicateLoginId(RequestUserDuplicateLoginIdDTO requestUserDuplicateLoginIdDTO){
+        return checkUserLoginIdBean.exec(requestUserDuplicateLoginIdDTO);
     }
 
 

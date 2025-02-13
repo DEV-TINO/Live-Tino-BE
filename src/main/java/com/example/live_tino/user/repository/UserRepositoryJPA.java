@@ -10,4 +10,8 @@ public interface UserRepositoryJPA extends JpaRepository<UserDAO, UUID> {
     UserDAO findByLoginId(String loginId);
 
     UserDAO findLoginIdByUserNameAndPhoneNum(String userName, String phoneNum);
+
+    Boolean existsByLoginId(String loginId);
+
+    Boolean existsByNickname(String nickname);
 }

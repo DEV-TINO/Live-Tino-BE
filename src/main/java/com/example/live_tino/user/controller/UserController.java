@@ -120,6 +120,7 @@ public class UserController {
     // 유저 정보 수정
     @PutMapping
     public ResponseEntity<Map<String, Object>> updateUser(@RequestBody RequestUserUpdateDTO requestUserUpdateDTO){
+        log.info("controller {}", requestUserUpdateDTO.getNickname());
         UUID userId = userService.updateUser(requestUserUpdateDTO);
 
         boolean success = userId != null;
@@ -150,8 +151,38 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(requestMap);
     }
 
+    // 아이디 중복 확인
+    @PostMapping("/duplicate/id")
+    public ResponseEntity<Map<String, Object>> duplicateLoginId(@RequestBody RequestUserDuplicateLoginIdDTO requestUserDuplicateLoginIdDTO){
+        boolean success = userService.duplicateLoginId(requestUserDuplicateLoginIdDTO) ? false : true;
 
-    // 유저 인증
+        // Map 이용해서 메시지와 id 값 json 데이터로 변환
+        Map<String, Object> requestMap = new HashMap<>();
+        requestMap.put("success", success);
+        requestMap.put("message", success ? "아이디 중복 안됨" : "아이디 중복");
+
+        // status, body 설정해서 응답 리턴
+        return ResponseEntity.status(HttpStatus.OK).body(requestMap);
+    }
 
 
+    // 유저 인증메세지 보내기
+
+    // 전화번호를 받겠지
+
+    // 인증 코드를 생성해야겠죠
+
+    // 사용자한테 메세지로 인증 코드 보내기
+
+    // db에 인증 코드 저장
+
+
+
+    // 인증 확인
+
+    // 사용자가 인증 코드를 보내겠죠
+
+    // db에서 인증 코드 저장한 값 가져와서 사용자 인증 코드랑 비교
+
+    // 같으면 인증 성공, 다르면 인증 실패
 }

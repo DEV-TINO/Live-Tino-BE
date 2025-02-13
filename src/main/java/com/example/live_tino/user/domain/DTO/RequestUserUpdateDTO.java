@@ -8,5 +8,5 @@ import java.util.UUID;
 public class RequestUserUpdateDTO {
     UUID userId;
     String userName;
-    String nickName;
+    String nickname;
 }
