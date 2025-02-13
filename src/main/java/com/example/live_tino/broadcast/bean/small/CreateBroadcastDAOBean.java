@@ -31,4 +31,7 @@ public class CreateBroadcastDAOBean {
                 .roomSetting(requestBroadcastSaveDTO.getRoomSetting())
                 .build();
     }
+
+
+
 }

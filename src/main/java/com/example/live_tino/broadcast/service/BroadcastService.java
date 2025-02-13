@@ -3,6 +3,8 @@ package com.example.live_tino.broadcast.service;
 import com.example.live_tino.broadcast.bean.*;
 import com.example.live_tino.broadcast.domain.DTO.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,8 +35,8 @@ public class BroadcastService {
     }
 
     // 전체 방송 조회
-    public List<ResponseBroadcastsGetDTO> getAllBroadcast(UUID userId){
-        return getBroadcastsBean.exec(userId);
+    public Page<ResponseBroadcastsGetDTO> getAllBroadcast(UUID userId, Pageable pageable){
+        return getBroadcastsBean.exec(userId, pageable);
     }
 
     // 특정 방송 조회

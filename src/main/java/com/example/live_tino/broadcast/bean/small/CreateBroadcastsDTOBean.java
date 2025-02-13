@@ -2,6 +2,9 @@ package com.example.live_tino.broadcast.bean.small;
 
 import com.example.live_tino.broadcast.domain.BroadcastDAO;
 import com.example.live_tino.broadcast.domain.DTO.ResponseBroadcastsGetDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -21,11 +24,11 @@ public class CreateBroadcastsDTOBean {
                 .build();
     }
 
-    public List<ResponseBroadcastsGetDTO> exec(List<BroadcastDAO> broadcastDAOList, UUID userId) {
+    public Page<ResponseBroadcastsGetDTO> exec(Page<BroadcastDAO> broadcastDAOPage, UUID userId, Pageable pageable) {
 
         List<ResponseBroadcastsGetDTO> responseBroadcastsGetDTOList  = new ArrayList<>();
 
-        for (BroadcastDAO broadcastDAO : broadcastDAOList) {
+        for (BroadcastDAO broadcastDAO : broadcastDAOPage.getContent()) {
 
             if (broadcastDAO.getUserId().equals(userId)) {
                 ResponseBroadcastsGetDTO responseBroadcastsGetDTO = exec(broadcastDAO);
@@ -34,6 +37,6 @@ public class CreateBroadcastsDTOBean {
             }
         }
 
-        return responseBroadcastsGetDTOList;
+        return new PageImpl<>(responseBroadcastsGetDTOList, pageable, broadcastDAOPage.getTotalElements());
     }
 }

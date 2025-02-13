@@ -5,9 +5,10 @@ import com.example.live_tino.broadcast.bean.small.GetBroadcastsDAOBean;
 import com.example.live_tino.broadcast.domain.BroadcastDAO;
 import com.example.live_tino.broadcast.domain.DTO.ResponseBroadcastsGetDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.UUID;
 
 @Component
@@ -22,11 +23,11 @@ public class GetBroadcastsBean {
         this.createBroadcastsDTOBean = createBroadcastsDTOBean;
     }
 
-    public List<ResponseBroadcastsGetDTO> exec(UUID userId){
-        List<BroadcastDAO> broadcastDAOList = getBroadcastsDAOBean.exec();
-        if (broadcastDAOList.isEmpty()) return null;
+    public Page<ResponseBroadcastsGetDTO> exec(UUID userId, Pageable pageable){
+        Page<BroadcastDAO> broadcastDAOPage = getBroadcastsDAOBean.exec(pageable);
+        if (broadcastDAOPage.isEmpty()) return null;
 
-        return createBroadcastsDTOBean.exec(broadcastDAOList, userId);
+        return createBroadcastsDTOBean.exec(broadcastDAOPage, userId, pageable);
     }
 
 }

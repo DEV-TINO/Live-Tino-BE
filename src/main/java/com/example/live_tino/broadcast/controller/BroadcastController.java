@@ -3,6 +3,9 @@ package com.example.live_tino.broadcast.controller;
 import com.example.live_tino.broadcast.domain.DTO.*;
 import com.example.live_tino.broadcast.service.BroadcastService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,9 +30,12 @@ public class BroadcastController {
     // 방송 전체 조회
     // 6개씩 끊어서 주기
     @GetMapping("/all/{userId}")
-    public ResponseEntity<Map<String, Object>> getAllBroadcast(@PathVariable("userId") UUID userId) {
+    public ResponseEntity<Map<String, Object>> getAllBroadcast(@PathVariable("userId") UUID userId, @RequestParam(value = "page", required = false) Integer page) {
 
-        List<ResponseBroadcastsGetDTO> responseBroadcastsGetDTOList = broadcastService.getAllBroadcast(userId);
+        if (page == null) page = 1;
+        Pageable pageable = PageRequest.of(page-1, 6);
+
+        Page<ResponseBroadcastsGetDTO> responseBroadcastsGetDTOList = broadcastService.getAllBroadcast(userId, pageable);
 
         boolean success = (responseBroadcastsGetDTOList == null) ? false : true;
 
