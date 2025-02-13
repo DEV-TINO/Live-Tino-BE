@@ -3,6 +3,7 @@ package com.example.live_tino.chat.webSocket;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.messaging.simp.stomp.StompReactorNettyCodec;
 import org.springframework.messaging.tcp.reactor.ReactorNettyTcpClient;
@@ -35,31 +36,32 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry){
         registry.addEndpoint("/stomp/chat")
-                .setAllowedOrigins("*")
-                .withSockJS();
+                .setAllowedOriginPatterns("*");
+//                .withSockJS();
+//        registry.addEndpoint("/stomp/chat")
+//                .setAllowedOriginPatterns("*");
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry){
-        TcpClient tcpClient = TcpClient
-                .create()
-                .host(rabbitmqHost)
-                .port(61613);
-
-        ReactorNettyTcpClient<byte[]> client = new ReactorNettyTcpClient<>(tcpClient, new StompReactorNettyCodec());
-
-        registry.setPathMatcher(new AntPathMatcher("."))
-                .setApplicationDestinationPrefixes("/pub");
+//        TcpClient tcpClient = TcpClient
+//                .create()
+//                .host(rabbitmqHost)
+//                .port(61613);
+//
+//        ReactorNettyTcpClient<byte[]> client = new ReactorNettyTcpClient<>(tcpClient, new StompReactorNettyCodec());
 
         registry.enableStompBrokerRelay("/queue", "topic", "/exchange", "/amq/queue")
                 .setAutoStartup(true)
-                .setTcpClient(client)
                 .setRelayHost("localhost")
                 .setRelayPort(61613)
+                .setSystemLogin("test")
+                .setSystemPasscode("1234")
                 .setClientLogin("test")
                 .setClientPasscode("1234");
-//                .setClientLogin(rabbitmqUsername)
-//                .setClientPasscode(rabbitmqPassword);
+
+        registry.setPathMatcher(new AntPathMatcher("."))
+                .setApplicationDestinationPrefixes("/pub");
     }
 
 }

@@ -6,8 +6,8 @@ import java.util.UUID;
 
 @Data
 public class RequestChatMessageCreateDTO {
-    UUID chatRoomId;
-    UUID userId;
+    String chatRoomId;
+    String sender;
 
-    String chatMessage;
+    String content;
 }

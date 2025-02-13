@@ -53,12 +53,12 @@ public class RabbitMQConfig {
 
     @Bean
     public Queue chatQueue(){
-        return new Queue(queueName, true);
+        return new Queue("test.queue", true);
     }
 
     @Bean
     public TopicExchange exchange(){
-        return new TopicExchange(exchangeName);
+        return new TopicExchange("test.exchange");
     }
 
     @Bean
@@ -66,7 +66,7 @@ public class RabbitMQConfig {
         return BindingBuilder
                 .bind(chatQueue)
                 .to(exchange)
-                .with(routingKey);
+                .with("chat.room.#");
     }
 
     @Bean
@@ -88,21 +88,21 @@ public class RabbitMQConfig {
         CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
         connectionFactory.setHost("localhost");
         connectionFactory.setPort(5672);
-        connectionFactory.setUsername("t1");
-        connectionFactory.setPassword("1");
+        connectionFactory.setUsername("test");
+        connectionFactory.setPassword("1234");
         // connectionFactory.setVirtualHost("/");
 //        connectionFactory.setUri("amqp://test:"+ urlEncodedPassword+ "@localhost:5672/vhost");
 
         return connectionFactory;
     }
 
-//    @Bean
-//    public SimpleRabbitListenerContainerFactory simpleRabbitListenerContainerFactory(ConnectionFactory connectionFactory){
-//        final SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
-//        factory.setConnectionFactory(connectionFactory);
-//        factory.setMessageConverter(jackson2JsonMessageConverter());
-//        return factory;
-//    }
+    @Bean
+    public SimpleRabbitListenerContainerFactory simpleRabbitListenerContainerFactory(ConnectionFactory connectionFactory){
+        final SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
+        factory.setConnectionFactory(connectionFactory);
+        factory.setMessageConverter(jackson2JsonMessageConverter());
+        return factory;
+    }
 
     @Bean
     public Jackson2JsonMessageConverter jackson2JsonMessageConverter(){

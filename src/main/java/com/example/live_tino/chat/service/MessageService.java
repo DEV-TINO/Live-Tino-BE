@@ -1,6 +1,7 @@
 package com.example.live_tino.chat.service;
 
 import com.example.live_tino.chat.domain.ChatMessageDAO;
+import com.example.live_tino.chat.domain.DTO.ChatMessage;
 import com.example.live_tino.chat.domain.DTO.RequestChatMessageCreateDTO;
 import com.example.live_tino.chat.domain.DTO.RequestMessageCreateDTO;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -30,7 +31,7 @@ public class MessageService {
         rabbitTemplate.convertAndSend(exchangeName, routingKey + chatRoomId, requestMessageCreateDTO);
     }
 
-    public void sendMessage(UUID chatRoomId, RequestMessageCreateDTO requestMessageCreateDTO){
-        rabbitTemplate.convertAndSend(exchangeName, routingKey + chatRoomId, requestMessageCreateDTO);
+    public void sendMessage(ChatMessage chatMessage){
+        rabbitTemplate.convertAndSend(exchangeName, "chat.room." + chatMessage.getRoomId(), chatMessage);
     }
 }
