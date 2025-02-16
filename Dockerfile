@@ -27,3 +27,20 @@ RUN sed -i 's/\r$//' ./gradlew
 RUN ./gradlew build -x test
 
 # 애플리케이션 실행 준비
+CMD ["java", "-jar", "build/libs/live-tino-0.0.1-SNAPSHOT.jar"]
+
+
+## 1. 베이스 이미지 설정
+#FROM openjdk:21
+#
+## 2. 작업 디렉토리 생성
+#WORKDIR /app
+#
+## 3. 빌드된 JAR 파일을 Docker 이미지에 복사
+#COPY build/libs/live-tino-0.0.1-SNAPSHOT.jar /app/live-tino-0.0.1-SNAPSHOT.jar
+#
+## 4. 애플리케이션 실행
+#CMD ["java", "-jar", "/app/live-tino-0.0.1-SNAPSHOT.jar"]
+#
+## 5. 외부에서 접속할 포트 설정
+#EXPOSE 8080
