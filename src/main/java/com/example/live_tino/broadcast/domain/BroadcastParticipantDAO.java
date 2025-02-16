@@ -20,9 +20,6 @@ public class BroadcastParticipantDAO {
     UUID broadcastId;
     UUID userId;
 
-    String nickname;
-
-    Boolean isMute;
     Boolean isDelete;
 
     LocalDateTime createAt;

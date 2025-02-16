@@ -51,10 +51,10 @@ public class BroadcastController {
 
 
     // 방송 참여 인원 조회
-    @GetMapping("/user/{broadcastId}")
-    public ResponseEntity<Map<String, Object>> getAllParticipant(@PathVariable("broadcastId") UUID broadcastId) {
+    @GetMapping("/{loginId}")
+    public ResponseEntity<Map<String, Object>> getAllParticipant(@PathVariable("loginId") String loginId) {
 
-        List<ResponseBroadcastParticipantGetDTO> responseBroadcastParticipantGetDTOList = broadcastService.getAllParticipant(broadcastId);
+        List<ResponseBroadcastParticipantGetDTO> responseBroadcastParticipantGetDTOList = broadcastService.getAllParticipant(loginId);
 
         boolean success = (responseBroadcastParticipantGetDTOList == null) ? false : true;
 

@@ -13,4 +13,6 @@ import java.util.UUID;
 public interface BroadcastRepositoryJPA extends JpaRepository<BroadcastDAO, UUID> {
 
     Page<BroadcastDAO> findAllByOrderByCreateAtAsc(Pageable pageable);
+
+    BroadcastDAO findByUserId(UUID userId);
 }

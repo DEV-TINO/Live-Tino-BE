@@ -10,7 +10,6 @@ public class RequestBroadcastSaveDTO {
 
     UUID userId;
     String title;
-    String saveDate;
     RoomType roomSetting;
     String broadcastPassword;
 

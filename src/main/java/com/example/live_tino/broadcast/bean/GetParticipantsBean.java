@@ -22,10 +22,10 @@ public class GetParticipantsBean {
         this.createBroadcastParticipantsDTOBean = createBroadcastParticipantsDTOBean;
     }
 
-    public List<ResponseBroadcastParticipantGetDTO> exec(UUID broadcastId){
+    public List<ResponseBroadcastParticipantGetDTO> exec(String loginId){
         List<BroadcastParticipantDAO> broadcastParticipantDAOList = getBroadcastParticipantsDAOBean.exec();
         if (broadcastParticipantDAOList.isEmpty()) return null;
 
-        return createBroadcastParticipantsDTOBean.exec(broadcastParticipantDAOList, broadcastId);
+        return createBroadcastParticipantsDTOBean.exec(broadcastParticipantDAOList, loginId);
     }
 }

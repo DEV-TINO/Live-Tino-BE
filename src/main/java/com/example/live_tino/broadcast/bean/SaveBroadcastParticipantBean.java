@@ -4,6 +4,7 @@ import com.example.live_tino.broadcast.bean.small.CreateBroadcastParticipantDAOB
 import com.example.live_tino.broadcast.bean.small.SaveBroadcastParticipantDAOBean;
 import com.example.live_tino.broadcast.domain.BroadcastParticipantDAO;
 import com.example.live_tino.broadcast.domain.DTO.RequestBroadcastParticipantSaveDTO;
+import com.example.live_tino.user.domain.UserDAO;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -20,6 +21,7 @@ public class SaveBroadcastParticipantBean {
     }
 
     public UUID exec(RequestBroadcastParticipantSaveDTO requestBroadcastParticipantSaveDTO){
+
 
         BroadcastParticipantDAO broadcastParticipantDAO = createBroadcastParticipantDAOBean.exec(requestBroadcastParticipantSaveDTO);
         if (broadcastParticipantDAO == null) return null;

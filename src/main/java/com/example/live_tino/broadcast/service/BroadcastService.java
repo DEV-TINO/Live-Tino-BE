@@ -44,8 +44,8 @@ public class BroadcastService {
 
 
     // 전체 방송 참여 인원 조회
-    public List<ResponseBroadcastParticipantGetDTO> getAllParticipant(UUID broadcastId){
-        return getParticipantsBean.exec(broadcastId);
+    public List<ResponseBroadcastParticipantGetDTO> getAllParticipant(String loginId){
+        return getParticipantsBean.exec(loginId);
     }
 
     // 방송 생성

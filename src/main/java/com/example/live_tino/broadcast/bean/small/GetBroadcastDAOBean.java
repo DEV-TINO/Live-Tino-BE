@@ -21,4 +21,7 @@ public class GetBroadcastDAOBean {
         return broadcastRepositoryJPA.findById(broadcastId).orElse(null);
     }
 
+    public BroadcastDAO exec2(UUID userId){
+        return broadcastRepositoryJPA.findByUserId(userId);
+    }
 }
