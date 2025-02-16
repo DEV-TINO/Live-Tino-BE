@@ -16,7 +16,7 @@ public class CreateUserDAOBean {
                 .userId(UUID.randomUUID())
                 .loginId(requestUserSaveDTO.getLoginId())
                 .userName(requestUserSaveDTO.getUserName())
-                .nickname(requestUserSaveDTO.getNickname())
+                .nickName(requestUserSaveDTO.getNickName())
                 .userPassword(BCrypt.hashpw(requestUserSaveDTO.getUserPassword(), BCrypt.gensalt()))
                 .phoneNum(requestUserSaveDTO.getPhoneNum())
                 .createAt(LocalDateTime.now())

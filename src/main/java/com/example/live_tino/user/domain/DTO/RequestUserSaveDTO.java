@@ -6,7 +6,7 @@ import lombok.Data;
 public class RequestUserSaveDTO {
     String loginId;
     String userName;
-    String nickname;
+    String nickName;
     String userPassword;
     String phoneNum;
 }

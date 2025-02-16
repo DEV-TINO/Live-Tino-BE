@@ -1,7 +1,7 @@
 package com.example.live_tino.user.controller;
 
 import com.example.live_tino.user.domain.DTO.*;
-import com.example.live_tino.user.error;
+import com.example.live_tino.user.Error;
 import com.example.live_tino.user.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,7 +35,7 @@ public class UserController {
         Map<String, Object> requestMap = new HashMap<>();
         try {
             cookies = userService.login(requestUserLoginDTO);
-        } catch (error e) {
+        } catch (Error e) {
             // throw new RuntimeException(e);
             requestMap.put("success", false);
             requestMap.put("message", e.getMsg());
@@ -121,15 +121,21 @@ public class UserController {
     @PutMapping
     public ResponseEntity<Map<String, Object>> updateUser(@RequestBody RequestUserUpdateDTO requestUserUpdateDTO){
         log.info("controller {}", requestUserUpdateDTO.getNickname());
-        UUID userId = userService.updateUser(requestUserUpdateDTO);
-
+        UUID userId = null;
+        Map<String, Object> requestMap = new HashMap<>();
+        try {
+            userId = userService.updateUser(requestUserUpdateDTO);
+        } catch (Error e) {
+            requestMap.put("success", false);
+            requestMap.put("message", e.getMsg());
+            requestMap.put("errorType", e.getType());
+            return ResponseEntity.status(HttpStatus.OK).body(requestMap);
+        }
         boolean success = userId != null;
 
-        Map<String, Object> requestMap = new HashMap<>();
         requestMap.put("success", success);
         requestMap.put("message", success ? "유저 정보 수정 성공" : "유저 정보 수정 실패");
         requestMap.put("userId", userId);
-
         return ResponseEntity.status(HttpStatus.OK).body(requestMap);
     }
 
@@ -164,6 +170,8 @@ public class UserController {
         // status, body 설정해서 응답 리턴
         return ResponseEntity.status(HttpStatus.OK).body(requestMap);
     }
+
+    //
 
 
     // 유저 인증메세지 보내기

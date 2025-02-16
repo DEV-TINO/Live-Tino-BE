@@ -6,6 +6,6 @@ import java.util.UUID;
 
 @Data
 public class RequestUserPasswordUpdateDTO {
-    UUID userId;
+    String loginId;
     String userPassword;
 }

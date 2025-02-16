@@ -2,15 +2,13 @@ package com.example.live_tino.user.bean.small;
 
 import com.example.live_tino.user.domain.DTO.RequestUserLoginDTO;
 import com.example.live_tino.user.domain.UserDAO;
-import com.example.live_tino.user.error;
+import com.example.live_tino.user.Error;
 import com.example.live_tino.user.repository.UserRepositoryJPA;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
 
-import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 @Slf4j
@@ -28,11 +26,15 @@ public class GetUserDAOBean {
         return userRepositoryJPA.findById(userId).orElse(null);
     }
 
+    public UserDAO exec(String loginId){
+        return userRepositoryJPA.findByLoginId(loginId);
+    }
+
     public UserDAO exec(String userName, String phoneNum){
         return userRepositoryJPA.findLoginIdByUserNameAndPhoneNum(userName, phoneNum);
     }
 
-    public UserDAO exec(RequestUserLoginDTO requestUserLoginDTO) throws error {
+    public UserDAO exec(RequestUserLoginDTO requestUserLoginDTO) throws Error {
         String loginId = requestUserLoginDTO.getLoginId();
         String userPassword = requestUserLoginDTO.getUserPassword();
 
@@ -43,7 +45,7 @@ public class GetUserDAOBean {
 
         // accountId로 조회했을 때 값이 없는 경우
         if(userDAO == null) {
-            throw new error("아이디를 찾을 수 없습니다.", "2000");
+            throw new Error("아이디를 찾을 수 없습니다.", "2000");
             // return null;
         };
 
@@ -54,7 +56,7 @@ public class GetUserDAOBean {
             log.info("Check pwd success" );
             return userDAO;
         } else {
-            throw new error("비밀번호를 찾을 수 없습니다.", "2001");
+            throw new Error("비밀번호를 찾을 수 없습니다.", "2001");
 
         }
     }

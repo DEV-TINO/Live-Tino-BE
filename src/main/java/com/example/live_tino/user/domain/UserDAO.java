@@ -19,7 +19,7 @@ public class UserDAO {
 
     String loginId;
     String userName;
-    String nickname;
+    String nickName;
     String userPassword;
     String phoneNum;
 

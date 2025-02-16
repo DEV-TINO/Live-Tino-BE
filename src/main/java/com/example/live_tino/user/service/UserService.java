@@ -3,7 +3,7 @@ package com.example.live_tino.user.service;
 import com.example.live_tino.user.bean.*;
 import com.example.live_tino.user.domain.DTO.*;
 import com.example.live_tino.user.domain.UserDAO;
-import com.example.live_tino.user.error;
+import com.example.live_tino.user.Error;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +42,7 @@ public class UserService {
     }
 
     // 로그인
-    public Cookie[] login(RequestUserLoginDTO requestUserLoginDTO) throws error {
+    public Cookie[] login(RequestUserLoginDTO requestUserLoginDTO) throws Error {
         UserDAO userDAO = checkUserBean.exec(requestUserLoginDTO);
         return addCookieBean.exec(userDAO, secretKey);
     }
@@ -67,7 +67,7 @@ public class UserService {
 
 
     // 유저 정보 수정
-    public UUID updateUser(RequestUserUpdateDTO requestUserUpdateDTO){
+    public UUID updateUser(RequestUserUpdateDTO requestUserUpdateDTO) throws Error {
         return updateUserBean.exec(requestUserUpdateDTO);
     }
 

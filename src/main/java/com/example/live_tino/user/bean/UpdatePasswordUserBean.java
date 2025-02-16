@@ -23,7 +23,7 @@ public class UpdatePasswordUserBean {
     }
 
     public UUID exec(RequestUserPasswordUpdateDTO requestUserPasswordUpdateDTO){
-        UserDAO userDAO = getUserDAOBean.exec(requestUserPasswordUpdateDTO.getUserId());
+        UserDAO userDAO = getUserDAOBean.exec(requestUserPasswordUpdateDTO.getLoginId());
         if(userDAO == null) return null;
 
         userDAO.setUserPassword(BCrypt.hashpw(requestUserPasswordUpdateDTO.getUserPassword(), BCrypt.gensalt()));
