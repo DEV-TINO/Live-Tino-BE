@@ -13,5 +13,5 @@ public interface UserRepositoryJPA extends JpaRepository<UserDAO, UUID> {
 
     Boolean existsByLoginId(String loginId);
 
-    Boolean existsByNickname(String nickname);
+    Boolean existsByNickName(String nickname);
 }
