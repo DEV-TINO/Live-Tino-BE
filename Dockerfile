@@ -27,7 +27,7 @@ RUN sed -i 's/\r$//' ./gradlew
 RUN ./gradlew build -x test
 
 # 애플리케이션 실행 준비
-#CMD ["java", "-jar", "build/libs/live-tino-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "build/libs/live-tino-0.0.1-SNAPSHOT.jar"]
 
 
 ## 1. 베이스 이미지 설정

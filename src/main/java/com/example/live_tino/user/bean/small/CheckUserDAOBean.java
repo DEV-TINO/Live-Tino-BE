@@ -21,6 +21,6 @@ public class CheckUserDAOBean {
     }
 
     public Boolean exec(RequestUserUpdateDTO requestUserUpdateDTO){
-        return userRepositoryJPA.existsByNickName(requestUserUpdateDTO.getNickname());
+        return userRepositoryJPA.existsByNickname(requestUserUpdateDTO.getNickname());
     }
 }
