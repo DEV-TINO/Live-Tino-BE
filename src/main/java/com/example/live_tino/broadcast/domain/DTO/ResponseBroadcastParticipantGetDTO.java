@@ -9,5 +9,4 @@ import java.util.UUID;
 @Builder
 public class ResponseBroadcastParticipantGetDTO {
     UUID userId;
-    String nickname;
 }
