@@ -89,7 +89,6 @@ public class MessageController {
 //    @MessageMapping("chat.enter.{chatRoomId}")
 //    public void enterUser(@Payload RequestChatMessageCreateDTO requestChatMessageCreateDTO, @DestinationVariable UUID chatRoomId){
 //        chat.setCreateAt(LocalDateTime.now());
-//        requestChatMessageCreateDTO.setNickName(requestChatMessageCreateDTO.getNickName() + "님 입장!");
 //        chat.setChatMessage(chat.getSender() + "님 입장!");
 //        rabbitTemplate.convertAndSend(exchangeName, "room." + chatRoomId, chat);
 //    }

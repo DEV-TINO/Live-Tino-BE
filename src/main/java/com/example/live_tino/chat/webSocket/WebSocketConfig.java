@@ -44,16 +44,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry){
-//        TcpClient tcpClient = TcpClient
-//                .create()
-//                .host(rabbitmqHost)
-//                .port(61613);
-//
-//        ReactorNettyTcpClient<byte[]> client = new ReactorNettyTcpClient<>(tcpClient, new StompReactorNettyCodec());
-
         registry.enableStompBrokerRelay("/queue", "topic", "/exchange", "/amq/queue")
                 .setAutoStartup(true)
-                .setRelayHost("localhost")
+                .setRelayHost("rabbitmq")
                 .setRelayPort(61613)
                 .setSystemLogin("test")
                 .setSystemPasscode("1234")
