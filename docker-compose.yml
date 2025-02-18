@@ -10,7 +10,7 @@ services:
       - mariadb
       - rabbitmq
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mariadb://host.docker.internal:3306/livetino
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/livetino
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 1234
       SPRING_RABBITMQ_HOST: livetino-rabbit
