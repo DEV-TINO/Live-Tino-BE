@@ -31,17 +31,9 @@ public class UpdateUserBean {
         UserDAO userDAO = getUserDAOBean.exec(requestUserUpdateDTO.getUserId());
         if (userDAO == null) return null;
 
-        log.info(requestUserUpdateDTO.getNickname());
         log.info(String.valueOf(requestUserUpdateDTO.getUserId()));
-
         userDAO.setUserName(requestUserUpdateDTO.getUserName());
-        if (!(requestUserUpdateDTO.getNickname().equals(userDAO.getNickName()))) {
-            userDAO.setNickName(requestUserUpdateDTO.getNickname());
-            log.info("닉네임 변경 성공");
-        } else {
-            log.info("닉네임 변경 실패");
-            throw new Error("닉네임이 중복입니다.", "2002");
-        }
+
         saveUserDAOBean.exec(userDAO);
 
         return userDAO.getUserId();

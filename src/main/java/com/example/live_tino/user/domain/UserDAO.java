@@ -19,7 +19,6 @@ public class UserDAO {
 
     String loginId;
     String userName;
-    String nickName;
     String userPassword;
     String phoneNum;
 

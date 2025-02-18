@@ -120,7 +120,6 @@ public class UserController {
     // 유저 정보 수정
     @PutMapping
     public ResponseEntity<Map<String, Object>> updateUser(@RequestBody RequestUserUpdateDTO requestUserUpdateDTO){
-        log.info("controller {}", requestUserUpdateDTO.getNickname());
         UUID userId = null;
         Map<String, Object> requestMap = new HashMap<>();
         try {
