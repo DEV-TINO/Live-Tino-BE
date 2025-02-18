@@ -13,7 +13,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mariadb://host.docker.internal:3306/livetino
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 1234
-      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_HOST: livetino-rabbit
 
   mariadb:
     image: mariadb:latest
@@ -41,6 +41,10 @@ services:
       RABBITMQ_DEFAULT_USER: test
       RABBITMQ_DEFAULT_PASS: 1234
       RABBITMQ_DEFAULT_VHOST: '/'
+    command: >
+      sh -c "rabbitmq-plugins enable rabbitmq_web_stomp &&
+             rabbitmq-plugins enable rabbitmq_web_stomp_examples &&
+             rabbitmq-server"
 
 volumes:
   mariadb_data:
