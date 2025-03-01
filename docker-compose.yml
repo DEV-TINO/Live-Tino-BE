@@ -1,50 +1,66 @@
-version: '3.8'
+  version: '3.8'
 
-services:
-  app:
-    build: .
-    container_name: live-tino-be-server
-    ports:
-      - "8080:8080"
-    depends_on:
-      - mariadb
-      - rabbitmq
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/livetino
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: 1234
-      SPRING_RABBITMQ_HOST: livetino-rabbit
+  networks:
+    livetino-network:
+      driver: bridge
 
-  mariadb:
-    image: mariadb:latest
-    container_name: mariadb
-    restart: always
-    environment:
-      MARIADB_ROOT_PASSWORD: 1234
-      MARIADB_DATABASE: livetino
-      MARIADB_USER: root
-      MARIADB_PASSWORD: 1234
-    ports:
-      - "3306:3306"
-    volumes:
-      - mariadb_data:/var/lib/mysql
+  services:
+    app:
+      build: .
+      container_name: live-tino-be-server
+      ports:
+        - "8080:8080"
+      depends_on:
+        - mariadb
+        - rabbitmq
+      environment:
+        SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/livetino
+        SPRING_DATASOURCE_USERNAME: root
+        SPRING_DATASOURCE_PASSWORD: 1234
+        SPRING_RABBITMQ_HOST: livetino-rabbit
+        SPRING_RABBITMQ_PORT: 5672
+        SPRING_RABBITMQ_USERNAME: test
+        SPRING_RABBITMQ_PASSWORD: 1234
+        SPRING_RABBITMQ_VIRTUAL_HOST: /
+      networks:
+        - livetino-network
 
-  rabbitmq:
-    image: 'rabbitmq:3-management'
-    container_name: 'livetino-rabbit'
-    restart: always
-    ports:
-      - "5672:5672"  # AMQP 포트
-      - "15672:15672"  # 관리 UI 포트
-      - "61613:61613"   # stomp 포트
-    environment:
-      RABBITMQ_DEFAULT_USER: test
-      RABBITMQ_DEFAULT_PASS: 1234
-      RABBITMQ_DEFAULT_VHOST: '/'
-    command: >
-      sh -c "rabbitmq-plugins enable rabbitmq_web_stomp &&
-             rabbitmq-plugins enable rabbitmq_web_stomp_examples &&
-             rabbitmq-server"
 
-volumes:
-  mariadb_data:
+    mariadb:
+      image: mariadb:latest
+      container_name: mariadb
+      restart: always
+      environment:
+        MARIADB_ROOT_PASSWORD: 1234
+        MARIADB_DATABASE: livetino
+        MARIADB_USER: root
+        MARIADB_PASSWORD: 1234
+      ports:
+        - "3306:3306"
+      volumes:
+        - mariadb_data:/var/lib/mysql
+      networks:
+        - livetino-network
+
+    rabbitmq:
+      image: 'rabbitmq:3-management'
+      container_name: 'livetino-rabbit'
+      restart: always
+      ports:
+        - "5672:5672"  # AMQP 포트
+        - "15672:15672"  # 관리 UI 포트
+        - "61613:61613"   # stomp 포트
+      environment:
+        RABBITMQ_DEFAULT_USER: test
+        RABBITMQ_DEFAULT_PASS: 1234
+        RABBITMQ_DEFAULT_VHOST: '/'
+      command: >
+        sh -c "rabbitmq-plugins enable rabbitmq_web_stomp &&
+               rabbitmq-plugins enable rabbitmq_web_stomp_examples &&
+               rabbitmq-server"
+      networks:
+        - livetino-network
+
+  volumes:
+    mariadb_data:
+

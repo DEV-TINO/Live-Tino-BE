@@ -36,8 +36,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry){
         registry.addEndpoint("/stomp/chat")
-                .setAllowedOriginPatterns("*");
-//                .withSockJS();
+                .setAllowedOrigins("http://localhost:63342")
+                .setAllowedOriginPatterns("*")
+                .withSockJS();
 //        registry.addEndpoint("/stomp/chat")
 //                .setAllowedOriginPatterns("*");
     }
@@ -46,7 +47,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void configureMessageBroker(MessageBrokerRegistry registry){
         registry.enableStompBrokerRelay("/queue", "topic", "/exchange", "/amq/queue")
                 .setAutoStartup(true)
-                .setRelayHost("rabbitmq")
+                .setRelayHost("livetino-rabbit")
                 .setRelayPort(61613)
                 .setSystemLogin("test")
                 .setSystemPasscode("1234")

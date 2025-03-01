@@ -39,37 +39,45 @@ public class WebSecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless 설정
                 .addFilterBefore(new JwtFilter(secretKey, getUserDAOBean), UsernamePasswordAuthenticationFilter.class)
-//                .authorizeHttpRequests(authorizeRequests ->
-//                    authorizeRequests
-//                            .requestMatchers("/user/save").permitAll()
-//                            .requestMatchers("/user/login").permitAll()
-//                            .requestMatchers("/user/logout").permitAll()
-//                            .requestMatchers("/user/password").permitAll()
-//                            .requestMatchers("/user").permitAll()
-//                            .requestMatchers("/user/id").permitAll()
-//                            .requestMatchers("/chat/create").permitAll()
-//                            .requestMatchers("/chat/room").permitAll()
-//                            .requestMatchers("/chat").permitAll()
-//                            .requestMatchers("/chat/{chatRoomId}").permitAll()
-//                            .requestMatchers("/chat/user/exit").permitAll()
-//                            .requestMatchers("/chat/message").permitAll()
-//                            .requestMatchers("/broadcast/all/{broadcastId}").permitAll()
-//                            .requestMatchers("/broadcast/user/{userId}").permitAll()
-//                            .requestMatchers("/broadcast").permitAll()
-//                            .requestMatchers("/broadcast/join").permitAll()
-//                            .requestMatchers("/broadcast/quit").permitAll()
-//                            .requestMatchers("/broadcast/user").permitAll()
-//                            .anyRequest().authenticated()
-//                )
+                .authorizeHttpRequests(authorizeRequests ->
+                    authorizeRequests
+                            .requestMatchers("/user/save").permitAll()
+                            .requestMatchers("/user/signup").permitAll()
+                            .requestMatchers("/user/login").permitAll()
+                            .requestMatchers("/user/logout").permitAll()
+                            .requestMatchers("/user/password").permitAll()
+                            .requestMatchers("user/duplicate/id").permitAll()
+                            .requestMatchers("/user").permitAll()
+                            .requestMatchers("/user/id").permitAll()
+                            .requestMatchers("/chat/create").permitAll()
+                            .requestMatchers("/chat/room").permitAll()
+                            .requestMatchers("/chat").permitAll()
+                            .requestMatchers("/chat/{chatRoomId}").permitAll()
+                            .requestMatchers("/chat/user/exit").permitAll()
+                            .requestMatchers("/chat/message").permitAll()
+                            .requestMatchers("/broadcast/all/{broadcastId}").permitAll()
+                            .requestMatchers("/broadcast/{broadcastId}").permitAll()
+                            .requestMatchers("/broadcast/user/{userId}").permitAll()
+                            .requestMatchers("/broadcast").permitAll()
+                            .requestMatchers("/broadcast/join").permitAll()
+                            .requestMatchers("/broadcast/quit").permitAll()
+                            .requestMatchers("/broadcast/user").permitAll()
+                            .requestMatchers("/stomp/chat/**").permitAll()
+                            .anyRequest().authenticated()
+                )
                 // JWT 필터
                 .build();
     }
 
+    // rabbitmq 자체 queue 수동 생성
+    // 큐에 메세지 넣는 거부터 해보자
+    //
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080", "http://localhost:5672", "127.0.0.1"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000","http://localhost:63342", "http://localhost:8080", "http://localhost:5672", "127.0.0.1"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
