@@ -23,7 +23,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 @Configuration
-// @EnableRabbit
+@EnableRabbit
 @Slf4j
 public class RabbitMQConfig {
 
@@ -51,6 +51,9 @@ public class RabbitMQConfig {
     @Value("${rabbitmq.routing.key}")
     private String routingKey;
 
+
+    // 큐 로그 찍어봐서 일단 로그 확인해보기
+    // 권한
     @Bean
     public Queue chatQueue(){
         return new Queue("test.queue", true);
@@ -86,7 +89,7 @@ public class RabbitMQConfig {
 //        String urlEncodedPassword = URLEncoder.encode("1234", "UTF-8");
 
         CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
-        connectionFactory.setHost("localhost");
+        connectionFactory.setHost("livetino-rabbit");
         connectionFactory.setPort(5672);
         connectionFactory.setUsername("test");
         connectionFactory.setPassword("1234");
@@ -117,9 +120,9 @@ public class RabbitMQConfig {
         };
     }
 
-//    @Bean
-//    public AmqpAdmin amqpAdmin(ConnectionFactory connectionFactory) {
-//        return new RabbitAdmin(connectionFactory);
-//    }
+    @Bean
+    public AmqpAdmin amqpAdmin(ConnectionFactory connectionFactory) {
+        return new RabbitAdmin(connectionFactory);
+    }
 }
 

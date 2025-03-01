@@ -1,0 +1,47 @@
+<!-- src/main/resources/templates/chat.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>실시간 채팅</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<body>
+<h1>실시간 채팅</h1>
+<div id="messages"></div> <!-- 채팅 메시지 표시 영역 -->
+<input type="text" id="messageInput" placeholder="메시지를 입력하세요">
+<button onclick="sendMessage()">전송</button> <!-- 메시지 전송 버튼 -->
+
+<script>
+  const roomId = "4a1b1a55-fee2-4dbd-a23a-664e930cacf7";
+  const socket = new SockJS('http://localhost:8080/stomp/chat'); // WebSocket 연결
+  const stompClient = Stomp.over(socket);
+
+  stompClient.connect({}, () => {
+      console.log('💡 STOMP 연결 성공');
+
+      // ✅ 올바른 구독 경로 (백틱 사용!)
+      stompClient.subscribe(`/topic/message.${roomId}`, (message) => {
+          const messagesDiv = document.getElementById('messages');
+          const msgDiv = document.createElement('div');
+          msgDiv.textContent = JSON.parse(message.body).content; // 메시지 내용 표시
+          messagesDiv.appendChild(msgDiv);
+      });
+  });
+
+  function sendMessage() {
+      const input = document.getElementById('messageInput');
+
+      // ✅ roomId 포함하여 메시지 전송
+      stompClient.send('/pub/chat.message', {}, JSON.stringify({
+          roomId: roomId,
+          content: input.value
+      }));
+
+      input.value = ''; // 입력란 비우기
+  }
+
+</script>
+</body>
+</html>
