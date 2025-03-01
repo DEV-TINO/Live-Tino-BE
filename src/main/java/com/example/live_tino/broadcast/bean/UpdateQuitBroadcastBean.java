@@ -41,9 +41,6 @@ public class UpdateQuitBroadcastBean {
         broadcastDAO.setSaveDate(saveDate);
 
         broadcastDAO.setBroadcastId(requestBroadcastQuitUpdateDTO.getBroadcastId());
-        broadcastDAO.setVideoUrl(requestBroadcastQuitUpdateDTO.getVideoUrl());
-        broadcastDAO.setThumbnail(requestBroadcastQuitUpdateDTO.getThumbnail());
-
 
         saveBroadcastDAOBean.exec(broadcastDAO);
 

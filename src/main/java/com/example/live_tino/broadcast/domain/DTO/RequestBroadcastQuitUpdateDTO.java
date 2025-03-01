@@ -7,6 +7,4 @@ import java.util.UUID;
 @Data
 public class RequestBroadcastQuitUpdateDTO {
     UUID broadcastId;
-    String videoUrl;
-    String thumbnail;
 }
