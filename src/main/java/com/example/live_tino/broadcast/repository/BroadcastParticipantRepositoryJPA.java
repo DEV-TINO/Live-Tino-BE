@@ -7,5 +7,6 @@ import java.util.List;
 import java.util.UUID;
 
 public interface BroadcastParticipantRepositoryJPA extends JpaRepository<BroadcastParticipantDAO, UUID> {
+    // 최신 순 전체 조회
     List<BroadcastParticipantDAO> findAllByOrderByCreateAtDesc();
 }

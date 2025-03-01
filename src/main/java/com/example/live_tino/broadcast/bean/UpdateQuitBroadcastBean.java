@@ -42,6 +42,8 @@ public class UpdateQuitBroadcastBean {
 
         broadcastDAO.setBroadcastId(requestBroadcastQuitUpdateDTO.getBroadcastId());
 
+        broadcastDAO.setIsEnded(true);
+
         saveBroadcastDAOBean.exec(broadcastDAO);
 
         return broadcastDAO.getBroadcastId();

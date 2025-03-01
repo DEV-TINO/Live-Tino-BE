@@ -28,5 +28,7 @@ public class BroadcastDAO {
     LocalDateTime createAt;
     LocalDateTime uploadAt;
 
+    Boolean isEnded;
+
     RoomType roomSetting;
 }

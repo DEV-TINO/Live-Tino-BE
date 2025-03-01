@@ -15,4 +15,7 @@ public interface BroadcastRepositoryJPA extends JpaRepository<BroadcastDAO, UUID
     Page<BroadcastDAO> findAllByOrderByCreateAtAsc(Pageable pageable);
 
     BroadcastDAO findByUserId(UUID userId);
+
+    // 유저 ID로 진행중인 방송 있는 지 확인
+    boolean existsByUserIdAndIsEndedFalse(UUID userId);
 }
