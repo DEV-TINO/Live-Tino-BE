@@ -1,6 +1,8 @@
 package com.example.live_tino.user.bean;
 
 import com.example.live_tino.user.bean.small.CreateCookieBean;
+import com.example.live_tino.user.bean.small.CreateUserLoginDTOBean;
+import com.example.live_tino.user.domain.DTO.ResponseUserLoginDTO;
 import com.example.live_tino.user.domain.UserDAO;
 import com.example.live_tino.user.jwt.JwtUtil;
 import jakarta.servlet.http.Cookie;
@@ -13,13 +15,15 @@ import org.springframework.stereotype.Component;
 public class AddCookieBean {
 
     CreateCookieBean createCookieBean;
+    CreateUserLoginDTOBean createUserLoginDTOBean;
 
     @Autowired
-    public AddCookieBean(CreateCookieBean createCookieBean) {
+    public AddCookieBean(CreateCookieBean createCookieBean, CreateUserLoginDTOBean createUserLoginDTOBean) {
         this.createCookieBean = createCookieBean;
+        this.createUserLoginDTOBean = createUserLoginDTOBean;
     }
 
-    public Cookie[] exec(UserDAO userDAO, String secretKey) {
+    public ResponseUserLoginDTO exec(UserDAO userDAO, String secretKey) {
         Cookie[] cookies = new Cookie[2];
 
         cookies[0] = createCookieBean.exec("access_token", JwtUtil.createAccessToken(userDAO.getUserId(), secretKey));
@@ -29,7 +33,8 @@ public class AddCookieBean {
         log.info("AccessToken: {}", cookies[0].getValue());
         log.info("RefreshToken: {}", cookies[1].getValue());
 
+        ResponseUserLoginDTO responseUserLoginDTO = createUserLoginDTOBean.exec(userDAO, cookies);
 
-        return cookies;
+        return responseUserLoginDTO;
     }
 }

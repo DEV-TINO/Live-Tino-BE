@@ -31,10 +31,10 @@ public class UserController {
     // 로그인
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> loginUser(@RequestBody RequestUserLoginDTO requestUserLoginDTO, HttpServletResponse httpServletResponse) {
-        Cookie[] cookies = null;
+        ResponseUserLoginDTO responseUserLoginDTO = null;
         Map<String, Object> requestMap = new HashMap<>();
         try {
-            cookies = userService.login(requestUserLoginDTO);
+            responseUserLoginDTO = userService.login(requestUserLoginDTO);
         } catch (Error e) {
             // throw new RuntimeException(e);
             requestMap.put("success", false);
@@ -43,19 +43,23 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.OK).body(requestMap);
         }
 
-        log.info(cookies[0].toString());
-        log.info(cookies[1].toString());
+//        log.info(cookies[0].toString());
+//        log.info(cookies[1].toString());
+
+        Boolean success = responseUserLoginDTO != null && responseUserLoginDTO.getCookies() != null;
 
         // Map 이용해서 success, 메시지와 id 값 json 데이터로 변환
         // Map<String, Object> requestMap = new HashMap<>();
-        requestMap.put("success", cookies != null);
-        requestMap.put("message", cookies != null ? "유저 로그인 성공" : "유저 로그인 실패");
+        requestMap.put("success", success);
+        requestMap.put("message", success ? "유저 로그인 성공" : "유저 로그인 실패");
+        requestMap.put("userInfo", responseUserLoginDTO);
 
         // TODO: For Debug..
-        requestMap.put(cookies[0].getName(), cookies[0].getValue());
-        requestMap.put(cookies[1].getName(), cookies[1].getValue());
+//        requestMap.put(cookies[0].getName(), cookies[0].getValue());
+//        requestMap.put(cookies[1].getName(), cookies[1].getValue());
 
-        if(cookies != null) {
+        if(success) {
+            Cookie[] cookies = responseUserLoginDTO.getCookies();
             for(Cookie cookie : cookies) {
                 httpServletResponse.addCookie(cookie);
             }
@@ -170,7 +174,20 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(requestMap);
     }
 
-    //
+    // 유저 정보 확인
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<Map<String, Object>> getUser(@PathVariable("userId") UUID userId){
+        ResponseUserGetDTO responseUserGetDTO = userService.getUser(userId);
+
+        boolean success = (responseUserGetDTO == null) ? false : true;
+
+        Map<String, Object> requestMap = new HashMap<>();
+        requestMap.put("success", success);
+        requestMap.put("message", success ? "인원 정보 조회 성공" : "인원 정보 조회 실패");
+        requestMap.put("participantList", responseUserGetDTO);
+
+        return ResponseEntity.status(HttpStatus.OK).body(requestMap);
+    }
 
 
     // 유저 인증메세지 보내기

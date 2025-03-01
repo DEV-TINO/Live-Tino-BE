@@ -25,12 +25,13 @@ public class UserService {
     UpdateUserBean updateUserBean;
     GetLoginIdBean getLoginIdBean;
     CheckUserLoginIdBean checkUserLoginIdBean;
+    GetUserBean getUserBean;
 
     @Value("${JWT_SECRET_KEY}")
     private String secretKey;
 
     @Autowired
-    public UserService(SaveUserBean saveUserBean, CheckUserBean checkUserBean, AddCookieBean addCookieBean, GetCookieBean getCookieBean, UpdatePasswordUserBean updatePasswordUserBean, UpdateUserBean updateUserBean, GetLoginIdBean getLoginIdBean, CheckUserLoginIdBean checkUserLoginIdBean){
+    public UserService(SaveUserBean saveUserBean, CheckUserBean checkUserBean, AddCookieBean addCookieBean, GetCookieBean getCookieBean, UpdatePasswordUserBean updatePasswordUserBean, UpdateUserBean updateUserBean, GetLoginIdBean getLoginIdBean, CheckUserLoginIdBean checkUserLoginIdBean, GetUserBean getUserBean){
         this.saveUserBean = saveUserBean;
         this.checkUserBean = checkUserBean;
         this.addCookieBean = addCookieBean;
@@ -39,10 +40,11 @@ public class UserService {
         this.updateUserBean = updateUserBean;
         this.getLoginIdBean = getLoginIdBean;
         this.checkUserLoginIdBean = checkUserLoginIdBean;
+        this.getUserBean = getUserBean;
     }
 
     // 로그인
-    public Cookie[] login(RequestUserLoginDTO requestUserLoginDTO) throws Error {
+    public ResponseUserLoginDTO login(RequestUserLoginDTO requestUserLoginDTO) throws Error {
         UserDAO userDAO = checkUserBean.exec(requestUserLoginDTO);
         return addCookieBean.exec(userDAO, secretKey);
     }
@@ -80,6 +82,11 @@ public class UserService {
     // 아이디 중복 확인
     public Boolean duplicateLoginId(RequestUserDuplicateLoginIdDTO requestUserDuplicateLoginIdDTO){
         return checkUserLoginIdBean.exec(requestUserDuplicateLoginIdDTO);
+    }
+
+    // 유저 정보 조회
+    public ResponseUserGetDTO getUser(UUID userId){
+        return getUserBean.exec(userId);
     }
 
 
