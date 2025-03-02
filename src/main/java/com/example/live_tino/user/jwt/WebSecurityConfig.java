@@ -1,6 +1,7 @@
 package com.example.live_tino.user.jwt;
 
 import com.example.live_tino.user.bean.small.GetUserDAOBean;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -55,7 +56,7 @@ public class WebSecurityConfig {
                             .requestMatchers("/chat/{chatRoomId}").permitAll()
                             .requestMatchers("/chat/user/exit").permitAll()
                             .requestMatchers("/chat/message").permitAll()
-                            .requestMatchers("/broadcast/all/{broadcastId}").permitAll()
+                            .requestMatchers("/broadcast/all/{userId}").permitAll()
                             .requestMatchers("/broadcast/{broadcastId}").permitAll()
                             .requestMatchers("/broadcast/user/{userId}").permitAll()
                             .requestMatchers("/broadcast").permitAll()
@@ -65,6 +66,13 @@ public class WebSecurityConfig {
                             .requestMatchers("/stomp/chat/**").permitAll()
                             .anyRequest().authenticated()
                 )
+                .addFilterBefore(new JwtFilter(secretKey, getUserDAOBean) {
+                    @Override
+                    protected boolean shouldNotFilter(HttpServletRequest request) {
+                        String path = request.getRequestURI();
+                        return path.equals("/user/login"); // 로그인 요청은 JWT 필터 적용 안 함
+                    }
+                }, UsernamePasswordAuthenticationFilter.class)
                 // JWT 필터
                 .build();
     }
