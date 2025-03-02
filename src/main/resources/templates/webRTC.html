@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WebRTC Test</title>
+</head>
+<body>
+<h2>WebRTC Test</h2>
+<div>
+  <video id="localVideo" autoplay></video>
+  <video id="remoteVideo" autoplay></video>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.min.js"></script>
+<script>
+  const socket = new WebSocket('ws://localhost:8080/ws'); // WebSocket 서버 URL
+
+  // WebRTC 관련 변수들
+  const peerConnectionConfig = {
+      iceServers: [{ urls: "stun:stun.l.google.com:19302" }]
+  };
+
+  let localStream;
+  let peerConnection;
+
+  // WebSocket 연결 성공 시
+  socket.onopen = () => {
+      console.log("WebSocket connected!");
+  };
+
+  // WebSocket 메시지 수신 시 처리
+  socket.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      if (message.type === "offer") {
+          handleOffer(message);
+      } else if (message.type === "answer") {
+          handleAnswer(message);
+      } else if (message.type === "candidate") {
+          handleCandidate(message);
+      }
+  };
+
+  // WebRTC Offer 처리
+  async function handleOffer(offer) {
+      peerConnection = new RTCPeerConnection(peerConnectionConfig);
+      await peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
+
+      // ICE 후보 설정
+      peerConnection.onicecandidate = (event) => {
+          if (event.candidate) {
+              sendMessage({ type: "candidate", candidate: event.candidate });
+          }
+      };
+
+      // 미디어 스트림을 remoteVideo에 연결
+      const remoteStream = new MediaStream();
+      peerConnection.ontrack = (event) => {
+          remoteStream.addTrack(event.track);
+          document.getElementById("remoteVideo").srcObject = remoteStream;
+      };
+
+      // 로컬 비디오 스트림을 연결
+      await getLocalStream();
+
+      const answer = await peerConnection.createAnswer();
+      await peerConnection.setLocalDescription(answer);
+      sendMessage({ type: "answer", sdp: answer });
+  }
+
+  // WebRTC Answer 처리
+  async function handleAnswer(answer) {
+      await peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
+  }
+
+  // WebRTC ICE 후보 처리
+  function handleCandidate(candidate) {
+      peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
+  }
+
+  // 로컬 미디어 스트림 가져오기
+  async function getLocalStream() {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      document.getElementById("localVideo").srcObject = stream;
+      stream.getTracks().forEach(track => peerConnection.addTrack(track, stream));
+  }
+
+  // 메시지 전송
+  function sendMessage(message) {
+      socket.send(JSON.stringify(message));
+  }
+
+  // Offer 메시지 보내기
+  async function createOffer() {
+      peerConnection = new RTCPeerConnection(peerConnectionConfig);
+
+      // ICE 후보 설정
+      peerConnection.onicecandidate = (event) => {
+          if (event.candidate) {
+              sendMessage({ type: "candidate", candidate: event.candidate });
+          }
+      };
+
+      // 미디어 스트림 연결
+      await getLocalStream();
+
+      const offer = await peerConnection.createOffer();
+      await peerConnection.setLocalDescription(offer);
+      sendMessage({ type: "offer", sdp: offer });
+  }
+
+  // 버튼을 통해 Offer를 생성하여 연결
+  createOffer();
+</script>
+</body>
+</html>
