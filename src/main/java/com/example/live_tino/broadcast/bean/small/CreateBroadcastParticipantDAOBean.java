@@ -3,6 +3,7 @@ package com.example.live_tino.broadcast.bean.small;
 import com.example.live_tino.broadcast.domain.BroadcastDAO;
 import com.example.live_tino.broadcast.domain.BroadcastParticipantDAO;
 import com.example.live_tino.broadcast.domain.DTO.RequestBroadcastParticipantSaveDTO;
+import com.example.live_tino.broadcast.domain.DTO.ResponseBroadcastJoinGetDTO;
 import com.example.live_tino.user.bean.small.GetUserDAOBean;
 import com.example.live_tino.user.domain.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;

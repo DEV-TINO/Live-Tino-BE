@@ -90,14 +90,14 @@ public class BroadcastController {
     @PostMapping("/join")
     public ResponseEntity<Map<String, Object>> createBroadcastParticipant(@RequestBody RequestBroadcastParticipantSaveDTO requestBroadcastParticipantSaveDTO){
 
-        UUID broadcastParticipantId = broadcastService.createBroadcastParticipant(requestBroadcastParticipantSaveDTO);
+        ResponseBroadcastJoinGetDTO responseBroadcastJoinGetDTO = broadcastService.createBroadcastParticipant(requestBroadcastParticipantSaveDTO);
 
-        boolean success = broadcastParticipantId != null;
+        boolean success = responseBroadcastJoinGetDTO != null;
 
         Map<String, Object> requestMap = new HashMap<>();
         requestMap.put("success", success);
         requestMap.put("message", success ? "방송 참여 성공" : "방송 참여 실패");
-        requestMap.put("broadcastParticipantId", broadcastParticipantId);
+        requestMap.put("broadcastParticipantId", responseBroadcastJoinGetDTO);
 
         return ResponseEntity.status(HttpStatus.OK).body(requestMap);
     }

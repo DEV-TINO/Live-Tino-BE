@@ -18,4 +18,6 @@ public interface BroadcastRepositoryJPA extends JpaRepository<BroadcastDAO, UUID
 
     // 유저 ID로 진행중인 방송 있는 지 확인
     boolean existsByUserIdAndIsEndedFalse(UUID userId);
+
+    String findTitleByBroadcastId(UUID broadcastId);
 }

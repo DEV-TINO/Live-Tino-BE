@@ -54,7 +54,7 @@ public class BroadcastService {
     }
 
     // 방송 참여
-    public UUID createBroadcastParticipant(RequestBroadcastParticipantSaveDTO requestBroadcastParticipantSaveDTO){
+    public ResponseBroadcastJoinGetDTO createBroadcastParticipant(RequestBroadcastParticipantSaveDTO requestBroadcastParticipantSaveDTO){
         return saveBroadcastParticipantBean.exec(requestBroadcastParticipantSaveDTO);
     }
 
