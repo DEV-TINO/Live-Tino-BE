@@ -4,6 +4,7 @@ import com.example.live_tino.chat.domain.ChatMessageDAO;
 import com.example.live_tino.chat.domain.DTO.ChatMessage;
 import com.example.live_tino.chat.domain.DTO.RequestChatMessageCreateDTO;
 import com.example.live_tino.chat.domain.DTO.RequestMessageCreateDTO;
+import com.example.live_tino.chat.repository.ChatMessageRepositoryJPA;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

@@ -9,4 +9,6 @@ import java.util.UUID;
 public interface ChatMessageRepositoryJPA extends JpaRepository<ChatMessageDAO, UUID> {
 
     List<ChatMessageDAO> findAllByOrderByCreateAtAsc();
+
+    List<ChatMessageDAO> findTop100ByChatRoomIdOrderByCreateAtDesc(UUID roomId);
 }

@@ -1,5 +1,6 @@
 package com.example.live_tino.chat.controller;
 
+import com.example.live_tino.chat.bean.ChatMessageQueue;
 import com.example.live_tino.chat.domain.DTO.ChatMessage;
 import com.example.live_tino.chat.domain.DTO.RequestChatMessageCreateDTO;
 import com.example.live_tino.chat.domain.DTO.RequestMessageCreateDTO;
@@ -29,15 +30,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
 @CrossOrigin("*")
 @Configuration
-@AllArgsConstructor
 @Slf4j
 public class MessageController {
-
 
     MessageService messageService;
     RabbitMQConfig rabbitMQConfig;
@@ -67,8 +68,9 @@ public class MessageController {
 
     @MessageMapping("chat.message")
     public void sendMessage(ChatMessage message){
-        log.info("send Message: chatRoomId = {}, message = {}", message.getRoomId(), message);
-        rabbitTemplate.convertAndSend("test.exchange", "chat.room." + message.getRoomId(), message);
+        String routingKey = "chat.room." + message.getRoomId();
+        log.info("Sending message to Exchange: {}, Routing Key: {}", exchangeName, routingKey);
+        rabbitTemplate.convertAndSend("test.exchange", routingKey, message);
 
         String destination = "/topic/message." + message.getRoomId();
         simpMessagingTemplate.convertAndSend(destination, message);
@@ -85,6 +87,4 @@ public class MessageController {
             log.error("Message conversion error", e);
         }
     }
-
-
 }

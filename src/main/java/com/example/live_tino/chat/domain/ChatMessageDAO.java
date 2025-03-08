@@ -16,13 +16,12 @@ import java.util.UUID;
 public class ChatMessageDAO {
     @Id
     UUID chatMessageId;
+
     UUID chatRoomId;
     UUID userId;
 
-    String chatMessage;
+    String message;
 
-    Type type;
-
-    LocalDateTime createAt;
-    LocalDateTime uploadAt;
+    LocalDateTime createAt = LocalDateTime.now();
+    LocalDateTime uploadAt = LocalDateTime.now();
 }

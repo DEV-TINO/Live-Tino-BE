@@ -16,7 +16,7 @@ public class CreateChatMessagesDTOBean {
                 .chatMessageId(chatMessageDAO.getChatMessageId())
                 .chatRoomId(chatMessageDAO.getChatRoomId())
                 .userId(chatMessageDAO.getUserId())
-                .chatMessage(chatMessageDAO.getChatMessage())
+                .chatMessage(chatMessageDAO.getMessage())
                 .build();
     }
 
