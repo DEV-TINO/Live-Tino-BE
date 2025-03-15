@@ -3,17 +3,24 @@ package com.example.live_tino.broadcast.controller;
 import com.example.live_tino.broadcast.domain.DTO.*;
 import com.example.live_tino.broadcast.service.BroadcastService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import javax.print.attribute.standard.Media;
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.file.Paths;
+import java.util.*;
 
 @RestController
 @CrossOrigin("*")
@@ -48,6 +55,38 @@ public class BroadcastController {
     }
 
     // 특정 방송 조회
+    @GetMapping("/{broadcastId}")
+    public ResponseEntity<Resource> streamVideo(@PathVariable UUID broadcastId, @RequestHeader(value = "Range", required = false) String rangeHeader) throws IOException{
+        File videoFile = Paths.get("/videos/" + broadcastId + ".webm").toFile();
+        long fileSize = videoFile.length();
+
+        if (!videoFile.exists()){
+            return ResponseEntity.notFound().build();
+        }
+
+        if (rangeHeader == null) {
+            return ResponseEntity.ok()
+                    .contentType(MediaType.valueOf("video/webm"))
+                    .body(new FileSystemResource(videoFile));
+        }
+
+        String[] ranges = rangeHeader.replace("bytes=", "").split("-");
+        long start = Long.parseLong(ranges[0]);
+        long end = (ranges.length > 1) ? Long.parseLong(ranges[1]) : Math.min(start + 1024 * 512, fileSize - 1); // 512KB
+
+        byte[] data = new byte[(int) (end - start + 1)];
+        try (RandomAccessFile raf = new RandomAccessFile(videoFile, "r")){
+            raf.seek(start);
+            raf.readFully(data);
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Range", "bytes" + start + "-" + end + "/" + fileSize);
+        headers.setContentLength(data.length);
+        headers.setContentType(MediaType.valueOf("video/webm"));
+
+        return new ResponseEntity<>(new ByteArrayResource(data), headers, HttpStatus.PARTIAL_CONTENT);
+    }
 
 
     // 방송 참여 인원 조회

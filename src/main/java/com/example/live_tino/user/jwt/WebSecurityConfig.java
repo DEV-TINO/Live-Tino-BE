@@ -42,35 +42,20 @@ public class WebSecurityConfig {
                 .addFilterBefore(new JwtFilter(secretKey, getUserDAOBean), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorizeRequests ->
                     authorizeRequests
-                            .requestMatchers("/user/save").permitAll()
-                            .requestMatchers("/user/signup").permitAll()
-                            .requestMatchers("/user/login").permitAll()
-                            .requestMatchers("/user/logout").permitAll()
-                            .requestMatchers("/user/password").permitAll()
-                            .requestMatchers("user/duplicate/id").permitAll()
-                            .requestMatchers("/user").permitAll()
-                            .requestMatchers("/user/id").permitAll()
-                            .requestMatchers("/chat/create").permitAll()
-                            .requestMatchers("/chat/room").permitAll()
-                            .requestMatchers("/chat").permitAll()
-                            .requestMatchers("/chat/{chatRoomId}").permitAll()
-                            .requestMatchers("/chat/user/exit").permitAll()
-                            .requestMatchers("/chat/message").permitAll()
-                            .requestMatchers("/broadcast/all/{userId}").permitAll()
-                            .requestMatchers("/broadcast/{broadcastId}").permitAll()
-                            .requestMatchers("/broadcast/user/{userId}").permitAll()
-                            .requestMatchers("/broadcast").permitAll()
-                            .requestMatchers("/broadcast/join").permitAll()
-                            .requestMatchers("/broadcast/quit").permitAll()
-                            .requestMatchers("/broadcast/user").permitAll()
-                            .requestMatchers("/stomp/chat/**").permitAll()
+                            .requestMatchers("/user/**").permitAll()
+                            .requestMatchers("/chat/**").permitAll()
+                            .requestMatchers("/broadcast/**").permitAll()
+                            .requestMatchers("/stomp/**").permitAll()
+                            .requestMatchers("/ws/**").permitAll()
+                            .requestMatchers("/videoStream/**").permitAll()
                             .anyRequest().authenticated()
                 )
+                .headers(header -> header.frameOptions(frameOptions -> frameOptions.disable()))
                 .addFilterBefore(new JwtFilter(secretKey, getUserDAOBean) {
                     @Override
                     protected boolean shouldNotFilter(HttpServletRequest request) {
                         String path = request.getRequestURI();
-                        return path.equals("/user/login"); // 로그인 요청은 JWT 필터 적용 안 함
+                        return path.equals("/user/login") || path.startsWith("/videoStream") || path.startsWith("/stomp") || path.startsWith("/ws/"); // 로그인 요청은 JWT 필터 적용 안 함
                     }
                 }, UsernamePasswordAuthenticationFilter.class)
                 // JWT 필터
@@ -84,10 +69,15 @@ public class WebSecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000","http://localhost:63342", "http://localhost:8080", "http://localhost:5672", "127.0.0.1"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000","http://localhost:63342", "http://localhost:8080", "http://localhost:5672"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowedOrigins(Arrays.asList(
+                "http://localhost:3000",  // React 개발 서버
+                "http://localhost:63342", // IntelliJ/WebStorm에서 실행하는 HTML
+                "http://localhost:8080"   // Spring Boot 서버
+        ));
         configuration.setAllowCredentials(true);
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

@@ -21,6 +21,8 @@ public class CreateBroadcastDAOBean {
     // 방송 DAO 생성
     public BroadcastDAO exec(RequestBroadcastSaveDTO requestBroadcastSaveDTO){
 
+        UUID broadcastId = UUID.randomUUID();
+
         if (checkCreateBroadcast.exec(requestBroadcastSaveDTO))
             return null;
 
@@ -29,11 +31,11 @@ public class CreateBroadcastDAOBean {
             password = requestBroadcastSaveDTO.getBroadcastPassword();
 
         return BroadcastDAO.builder()
-                .broadcastId(UUID.randomUUID())
+                .broadcastId(broadcastId)
                 .userId(requestBroadcastSaveDTO.getUserId())
                 .title(requestBroadcastSaveDTO.getTitle())
                 .totalTime("99:99:99")
-                .videoUrl("")
+                .videoUrl("/videos/" + broadcastId + ".webm")
                 .broadcastPassword(password)
                 .saveDate("99.99.99")
                 .thumbnail("")
@@ -43,7 +45,4 @@ public class CreateBroadcastDAOBean {
                 .roomSetting(requestBroadcastSaveDTO.getRoomSetting())
                 .build();
     }
-
-
-
 }

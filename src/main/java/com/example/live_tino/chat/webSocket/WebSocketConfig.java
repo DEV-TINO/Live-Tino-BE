@@ -1,22 +1,19 @@
 package com.example.live_tino.chat.webSocket;
 
+import com.example.live_tino.broadcast.handler.VideoStreamHandler;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
-import org.springframework.messaging.simp.stomp.StompReactorNettyCodec;
-import org.springframework.messaging.tcp.reactor.ReactorNettyTcpClient;
 import org.springframework.util.AntPathMatcher;
-import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
-import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
-import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
-import reactor.netty.tcp.TcpClient;
+import org.springframework.web.socket.config.annotation.*;
+import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
 
 @Configuration
 @EnableWebSocketMessageBroker
 @RequiredArgsConstructor
-public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+public class WebSocketConfig implements WebSocketMessageBrokerConfigurer, WebSocketConfigurer {
 
     @Value("${chat.path}")
     private String path;
@@ -32,6 +29,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Value("${spring.rabbitmq.password}")
     private String rabbitmqPassword;
+
+    VideoStreamHandler videoStreamHandler;
+
+    @Autowired
+    public WebSocketConfig(VideoStreamHandler videoStreamHandler){
+        this.videoStreamHandler = videoStreamHandler;
+    }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry){
@@ -55,6 +59,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
         registry.setPathMatcher(new AntPathMatcher("."))
                 .setApplicationDestinationPrefixes("/pub");
+    }
+
+    @Override
+    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry){
+        registry.addHandler(videoStreamHandler, "/ws/videoStream")
+                .setAllowedOrigins("*")
+                .addInterceptors(new HttpSessionHandshakeInterceptor());
     }
 
 }
