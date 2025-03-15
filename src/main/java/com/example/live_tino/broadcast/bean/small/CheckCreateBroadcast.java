@@ -1,7 +1,6 @@
 package com.example.live_tino.broadcast.bean.small;
 
-import com.example.live_tino.broadcast.domain.BroadcastDAO;
-import com.example.live_tino.broadcast.domain.DTO.RequestBroadcastSaveDTO;
+import com.example.live_tino.broadcast.domain.DTO.RequestBroadcastAndChatSaveDTO;
 import com.example.live_tino.broadcast.repository.BroadcastRepositoryJPA;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,7 +15,7 @@ public class CheckCreateBroadcast {
         this.broadcastRepositoryJPA = broadcastRepositoryJPA;
     }
 
-    public Boolean exec(RequestBroadcastSaveDTO requestBroadcastSaveDTO){
-        return broadcastRepositoryJPA.existsByUserIdAndIsEndedFalse(requestBroadcastSaveDTO.getUserId());
+    public Boolean exec(RequestBroadcastAndChatSaveDTO requestBroadcastAndChatSaveDTO){
+        return broadcastRepositoryJPA.existsByUserIdAndIsEndedFalse(requestBroadcastAndChatSaveDTO.getUserId());
     }
 }

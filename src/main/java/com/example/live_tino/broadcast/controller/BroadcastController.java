@@ -15,7 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.attribute.standard.Media;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -107,10 +106,10 @@ public class BroadcastController {
 
 
     // 방송 생성
-    @PostMapping
-    public ResponseEntity<Map<String, Object>> createBroadcast(@RequestBody RequestBroadcastSaveDTO requestBroadcastSaveDTO) {
+    @PostMapping("/chat")
+    public ResponseEntity<Map<String, Object>> createBroadcastAndChat(@RequestBody RequestBroadcastAndChatSaveDTO requestBroadcastAndChatSaveDTO) {
 
-        UUID broadcastId = broadcastService.createBroadcast(requestBroadcastSaveDTO);
+        UUID broadcastId = broadcastService.createBroadcastAndChat(requestBroadcastAndChatSaveDTO);
 
         boolean success = broadcastId != null;
 

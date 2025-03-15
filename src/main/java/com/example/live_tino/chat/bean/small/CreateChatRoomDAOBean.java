@@ -1,7 +1,8 @@
 package com.example.live_tino.chat.bean.small;
 
+import com.example.live_tino.broadcast.domain.BroadcastDAO;
+import com.example.live_tino.broadcast.domain.DTO.RequestBroadcastAndChatSaveDTO;
 import com.example.live_tino.chat.domain.ChatRoomDAO;
-import com.example.live_tino.chat.domain.DTO.RequestChatRoomCreateDTO;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -10,10 +11,10 @@ import java.util.UUID;
 @Component
 public class CreateChatRoomDAOBean {
 
-    public ChatRoomDAO exec(RequestChatRoomCreateDTO requestChatRoomCreateDTO){
+    public ChatRoomDAO exec(RequestBroadcastAndChatSaveDTO requestBroadcastAndChatSaveDTO, BroadcastDAO broadcastDAO){
         return ChatRoomDAO.builder()
-                .chatRoomId(UUID.randomUUID())
-                .userId(requestChatRoomCreateDTO.getUserId())
+                .chatRoomId(broadcastDAO.getBroadcastId())
+                .userId(requestBroadcastAndChatSaveDTO.getUserId())
                 .isDelete(false)
                 .createAt(LocalDateTime.now())
                 .uploadAt(LocalDateTime.now())

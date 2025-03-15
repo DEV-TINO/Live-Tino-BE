@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.UUID;
 
 @Data
-public class RequestBroadcastSaveDTO {
+public class RequestBroadcastAndChatSaveDTO {
 
     UUID userId;
     String title;

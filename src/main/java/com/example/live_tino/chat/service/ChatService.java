@@ -12,15 +12,13 @@ import java.util.UUID;
 public class ChatService {
 
     GetChatMessagesBean getChatMessagesBean;
-    SaveChatRoomBean saveChatRoomBean;
     DeleteChatMessageBean deleteChatMessageBean;
     DeleteChatRoomBean deleteChatRoomBean;
     DeleteChatUserBean deleteChatUserBean;
 
     @Autowired
-    public ChatService(GetChatMessagesBean getChatMessagesBean, SaveChatRoomBean saveChatRoomBean, DeleteChatMessageBean deleteChatMessageBean, DeleteChatRoomBean deleteChatRoomBean, DeleteChatUserBean deleteChatUserBean){
+    public ChatService(GetChatMessagesBean getChatMessagesBean, DeleteChatMessageBean deleteChatMessageBean, DeleteChatRoomBean deleteChatRoomBean, DeleteChatUserBean deleteChatUserBean){
         this.getChatMessagesBean = getChatMessagesBean;
-        this.saveChatRoomBean = saveChatRoomBean;
         this.deleteChatMessageBean = deleteChatMessageBean;
         this.deleteChatRoomBean = deleteChatRoomBean;
         this.deleteChatUserBean = deleteChatUserBean;
@@ -31,10 +29,10 @@ public class ChatService {
         return getChatMessagesBean.exec(chatRoomId);
     }
 
-    // 채팅방 생성
-    public UUID createChatRoom(RequestChatRoomCreateDTO requestChatRoomCreateDTO){
-        return saveChatRoomBean.exec(requestChatRoomCreateDTO);
-    }
+//    // 채팅방 생성
+//    public UUID createChatRoom(RequestChatRoomCreateDTO requestChatRoomCreateDTO){
+//        return saveChatRoomBean.exec(requestChatRoomCreateDTO);
+//    }
 
     // 채팅 삭제
     public UUID deleteChat(RequestChatMessageDeleteDTO requestChatMessageDeleteDTO){

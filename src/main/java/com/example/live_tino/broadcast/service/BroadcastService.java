@@ -49,8 +49,8 @@ public class BroadcastService {
     }
 
     // 방송 생성
-    public UUID createBroadcast(RequestBroadcastSaveDTO requestBroadcastSaveDTO){
-        return saveBroadcastBean.exec(requestBroadcastSaveDTO);
+    public UUID createBroadcastAndChat(RequestBroadcastAndChatSaveDTO requestBroadcastAndChatSaveDTO){
+        return saveBroadcastBean.exec(requestBroadcastAndChatSaveDTO);
     }
 
     // 방송 참여

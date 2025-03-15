@@ -48,23 +48,23 @@ public class ChatController {
         return ResponseEntity.status(HttpStatus.OK).body(requestMap);
     }
 
-    // 채팅방 생성
-    @PostMapping("/create")
-    public ResponseEntity<Map<String, Object>> createChatRoom(@RequestBody RequestChatRoomCreateDTO requestChatRoomCreateDTO){
-
-        UUID chatRoomId = chatService.createChatRoom(requestChatRoomCreateDTO);
-
-        log.info("chatRoomId : {}", chatRoomId);
-
-        boolean success = (chatRoomId == null) ? false : true;
-
-        Map<String, Object> requestMap = new HashMap<>();
-        requestMap.put("success", success);
-        requestMap.put("message", success ? "채팅방 생성 성공" : "채팅방 생성 실패");
-        requestMap.put("chatRoomId", chatRoomId);
-
-        return ResponseEntity.status(HttpStatus.OK).body(requestMap);
-    }
+//    // 채팅방 생성
+//    @PostMapping("/create")
+//    public ResponseEntity<Map<String, Object>> createChatRoom(@RequestBody RequestChatRoomCreateDTO requestChatRoomCreateDTO){
+//
+//        UUID chatRoomId = chatService.createChatRoom(requestChatRoomCreateDTO);
+//
+//        log.info("chatRoomId : {}", chatRoomId);
+//
+//        boolean success = (chatRoomId == null) ? false : true;
+//
+//        Map<String, Object> requestMap = new HashMap<>();
+//        requestMap.put("success", success);
+//        requestMap.put("message", success ? "채팅방 생성 성공" : "채팅방 생성 실패");
+//        requestMap.put("chatRoomId", chatRoomId);
+//
+//        return ResponseEntity.status(HttpStatus.OK).body(requestMap);
+//    }
 
 
 
