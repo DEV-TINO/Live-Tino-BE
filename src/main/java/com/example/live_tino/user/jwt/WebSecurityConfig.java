@@ -71,11 +71,7 @@ public class WebSecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000","http://localhost:63342", "http://localhost:8080", "http://localhost:5672"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedOrigins(Arrays.asList(
-                "http://localhost:3000",  // React 개발 서버
-                "http://localhost:63342", // IntelliJ/WebStorm에서 실행하는 HTML
-                "http://localhost:8080"   // Spring Boot 서버
-        ));
+        configuration.setAllowedOrigins(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
