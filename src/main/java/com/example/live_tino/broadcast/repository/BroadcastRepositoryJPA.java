@@ -4,6 +4,7 @@ import com.example.live_tino.broadcast.domain.BroadcastDAO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,5 +20,6 @@ public interface BroadcastRepositoryJPA extends JpaRepository<BroadcastDAO, UUID
     // 유저 ID로 진행중인 방송 있는 지 확인
     boolean existsByUserIdAndIsEndedFalse(UUID userId);
 
+    @Query("SELECT b.title FROM BroadcastDAO b WHERE b.id = :broadcastId")
     String findTitleByBroadcastId(UUID broadcastId);
 }

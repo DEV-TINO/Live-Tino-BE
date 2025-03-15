@@ -22,6 +22,6 @@ public class ChatMessageDAO {
 
     String message;
 
-    LocalDateTime createAt = LocalDateTime.now();
-    LocalDateTime uploadAt = LocalDateTime.now();
+    LocalDateTime createAt;
+    LocalDateTime uploadAt;
 }

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket 테스트</title>
+</head>
+<body>
+<h2>WebSocket 테스트</h2>
+<button onclick="connectWebSocket()">웹소켓 연결</button>
+<button onclick="sendTestMessage()">메시지 전송</button>
+<p id="status">연결 상태: ❌</p>
+
+<script>
+    let ws;
+
+    function connectWebSocket() {
+        ws = new WebSocket("ws://localhost:8080/ws/videoStream?broadcastId=98c58875-6788-4b4e-8178-c3524370aad9");
+
+        ws.onopen = function () {
+            console.log("✅ WebSocket 연결됨");
+            document.getElementById("status").innerText = "연결 상태: ✅";
+        };
+
+        ws.onmessage = function (event) {
+            console.log("📩 메시지 수신:", event.data);
+        };
+
+        ws.onerror = function (error) {
+            console.error("❌ WebSocket 오류:", error);
+        };
+
+        ws.onclose = function () {
+            console.log("🔴 WebSocket 연결 종료");
+            document.getElementById("status").innerText = "연결 상태: ❌";
+        };
+    }
+
+    function sendTestMessage() {
+        if (ws && ws.readyState === WebSocket.OPEN) {
+            ws.send("Hello, WebSocket!");
+            console.log("📤 메시지 전송: Hello, WebSocket!");
+        } else {
+            console.error("⛔ WebSocket 연결 안됨");
+        }
+    }
+</script>
+</body>
+</html>
