@@ -2,6 +2,7 @@ package com.example.live_tino.user.bean;
 
 import com.example.live_tino.user.bean.small.CreateCookieBean;
 import com.example.live_tino.user.bean.small.CreateUserLoginDTOBean;
+import com.example.live_tino.user.bean.small.SaveUserRefreshTokenDAOBean;
 import com.example.live_tino.user.domain.DTO.ResponseUserLoginDTO;
 import com.example.live_tino.user.domain.UserDAO;
 import com.example.live_tino.user.jwt.JwtUtil;
@@ -28,7 +29,6 @@ public class AddCookieBean {
 
         cookies[0] = createCookieBean.exec("access_token", JwtUtil.createAccessToken(userDAO.getUserId(), secretKey));
         cookies[1] = createCookieBean.exec("refresh_token", JwtUtil.createRefreshToken(userDAO.getUserId(), secretKey));
-
 
         log.info("AccessToken: {}", cookies[0].getValue());
         log.info("RefreshToken: {}", cookies[1].getValue());

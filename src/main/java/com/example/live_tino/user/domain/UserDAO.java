@@ -22,6 +22,8 @@ public class UserDAO {
     String userPassword;
     String phoneNum;
 
+    String refreshToken;
+
     LocalDateTime createAt;
     LocalDateTime uploadAt;
 }

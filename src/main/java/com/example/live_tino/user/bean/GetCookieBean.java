@@ -1,5 +1,6 @@
 package com.example.live_tino.user.bean;
 
+import com.example.live_tino.user.jwt.JwtUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,11 @@ public class GetCookieBean {
                     break;
                 }
             }
+        }
+
+        // 쿠키가 존재하는 지 확인
+        if (cookie == null) {
+            return null;
         }
 
         return cookie;

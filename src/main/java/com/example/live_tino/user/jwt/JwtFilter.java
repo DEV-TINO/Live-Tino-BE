@@ -1,7 +1,9 @@
 package com.example.live_tino.user.jwt;
 
 import com.example.live_tino.user.bean.small.GetUserDAOBean;
+import com.example.live_tino.user.bean.small.SaveUserRefreshTokenDAOBean;
 import com.example.live_tino.user.domain.UserDAO;
+import com.example.live_tino.user.repository.UserRepositoryJPA;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -29,6 +31,14 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private String secretKey;
     private GetUserDAOBean getUserDAOBean;
+    UserRepositoryJPA userRepositoryJPA;
+    SaveUserRefreshTokenDAOBean saveUserRefreshTokenDAOBean;
+
+    @Autowired
+    public JwtFilter(UserRepositoryJPA userRepositoryJPA, SaveUserRefreshTokenDAOBean saveUserRefreshTokenDAOBean){
+        this.userRepositoryJPA = userRepositoryJPA;
+        this.saveUserRefreshTokenDAOBean = saveUserRefreshTokenDAOBean;
+    }
 
     public JwtFilter(String secretKey, GetUserDAOBean getUserDAOBean){
         this.secretKey = secretKey;
@@ -77,6 +87,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
                 String newRefreshToken = JwtUtil.createRefreshToken(UUID.fromString(userId), secretKey);
                 addToken(response, "refresh_token", newRefreshToken, 60 * 60 * 24);
+
+                saveUserRefreshTokenDAOBean.exec(UUID.fromString(userId), newRefreshToken);
 
                 authenticateUser(newAccessToken, request);
             }

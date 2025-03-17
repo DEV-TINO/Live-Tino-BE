@@ -43,20 +43,11 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.OK).body(requestMap);
         }
 
-//        log.info(cookies[0].toString());
-//        log.info(cookies[1].toString());
-
         Boolean success = responseUserLoginDTO != null && responseUserLoginDTO.getCookies() != null;
 
-        // Map 이용해서 success, 메시지와 id 값 json 데이터로 변환
-        // Map<String, Object> requestMap = new HashMap<>();
         requestMap.put("success", success);
         requestMap.put("message", success ? "유저 로그인 성공" : "유저 로그인 실패");
         requestMap.put("userInfo", responseUserLoginDTO);
-
-        // TODO: For Debug..
-//        requestMap.put(cookies[0].getName(), cookies[0].getValue());
-//        requestMap.put(cookies[1].getName(), cookies[1].getValue());
 
         if(success) {
             Cookie[] cookies = responseUserLoginDTO.getCookies();
