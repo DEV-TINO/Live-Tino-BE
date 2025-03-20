@@ -69,7 +69,7 @@ public class MessageController {
     @MessageMapping("chat.message")
     public void sendMessage(ChatMessage message){
         String routingKey = "chat.room." + message.getRoomId();
-        log.info("Sending message to Exchange: {}, Routing Key: {}", exchangeName, routingKey);
+        log.info("Sending message from {} to Exchange: {}, Routing Key: {}",message.getSender(), exchangeName, routingKey);
         rabbitTemplate.convertAndSend("test.exchange", routingKey, message);
 
         String destination = "/topic/message." + message.getRoomId();
@@ -82,7 +82,7 @@ public class MessageController {
             String jsonString = new String(message.getBody(), StandardCharsets.UTF_8);
             ObjectMapper objectMapper = new ObjectMapper();
             ChatMessage chatMessage = objectMapper.readValue(jsonString, ChatMessage.class);
-            log.info("Received Message: {}", chatMessage);
+            log.info("Received Message from {}: {}",chatMessage.getSender(), chatMessage);
         } catch (Exception e) {
             log.error("Message conversion error", e);
         }

@@ -12,4 +12,5 @@ import java.util.UUID;
 public class ChatMessage {
     UUID roomId;
     String content;
+    String sender;
 }
