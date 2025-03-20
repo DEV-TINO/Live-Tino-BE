@@ -8,5 +8,6 @@ import java.util.UUID;
 @Data
 public class ResponseBroadcastJoinGetDTO {
     UUID broadcastParticipantId;
+    UUID broadcastId;
     String title;
 }

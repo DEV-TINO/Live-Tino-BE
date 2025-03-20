@@ -23,6 +23,7 @@ public class CreateBroadcastJoinDTOBean {
         ResponseBroadcastJoinGetDTO responseBroadcastJoinGetDTO = new ResponseBroadcastJoinGetDTO();
 
         responseBroadcastJoinGetDTO.setBroadcastParticipantId(broadcastParticipantDAO.getBroadcastParticipantId());
+        responseBroadcastJoinGetDTO.setBroadcastId(broadcastParticipantDAO.getBroadcastId());
         responseBroadcastJoinGetDTO.setTitle(title);
 
         return responseBroadcastJoinGetDTO;

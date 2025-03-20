@@ -140,6 +140,11 @@ public class BroadcastController {
         return ResponseEntity.status(HttpStatus.OK).body(requestMap);
     }
 
+    // 내 컴퓨터로 영상 저장
+//    @PostMapping("/download")
+//    public ResponseEntity<Map<String, Object>> saveBroadcast(@RequestBody )
+
+
     // 방송 종료
     @PutMapping("/quit")
     public ResponseEntity<Map<String, Object>> updateQuitBroadcast(@RequestBody RequestBroadcastQuitUpdateDTO requestBroadcastQuitUpdateDTO){
@@ -157,6 +162,9 @@ public class BroadcastController {
     }
 
     // canvas 저장
+
+    // user 에 따라 canvas DB를 나눠야하나?
+    //  
 
 
     // 방송 수정
